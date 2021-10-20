@@ -1,0 +1,65 @@
+---
+title: "Exam1AllisonADA"
+author: "Allison Heffley"
+date: "10/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#add needed libraries
+library(plyr)
+library(readr)
+library(tidyverse)
+library(ggplot2)
+```
+
+
+```{r}
+#import the dataset from github!
+
+BRFSS <- read.csv("https://raw.githubusercontent.com/kijohnson/ADA-Fall-2021/cb137ce0c7542059ce556f9f183863a93572d662/BRFSS2017_10percent_v.csv") %>%
+  na.omit()
+
+```
+
+
+```{r}
+#round-a-bout way to get the medians!
+#creating a value for male height
+Maleheight <- BRFSS$ht_meters[which(BRFSS$SEX==1)]
+Maleheight
+
+#mean and median heights for males
+mean(Maleheight, na.rm = TRUE)
+median(Maleheight, na.rm= TRUE)
+
+#creating a value for female height 
+Femaleheight <- BRFSS$ht_meters[which(BRFSS$SEX == 2)]
+Femaleheight
+
+#mean and median heights for females
+mean(Femaleheight, na.rm = TRUE)
+median(Femaleheight, na.rm = TRUE)
+
+
+
+#create levels for sex so it is split up into male and female on the plot
+levels(BRFSS$SEX)
+newlevel <- c(1, 2)
+BRFSS$SEX <- factor(BRFSS$SEX, levels = newlevel, labels = "Male", "Female")
+
+#create boxplot, since that will show IQR and diff in medians
+ggplot(data = BRFSS, mapping = aes(x = SEX, y = ht_meters)) +
+  geom_boxplot()+
+  labs(x = "Sex", y = "heights in meters",  title = "Boxplot")
+  
+
+      
+
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
